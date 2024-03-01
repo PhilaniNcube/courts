@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { use, useState } from "react";
 import { set } from "zod";
+import CourtMap from "./court-map";
 
 
 type CourtsListProps = {
@@ -17,6 +18,8 @@ const CourtsList = ({ courts }: CourtsListProps) => {
 
   const searchParams = useSearchParams();
   const address = searchParams.get("address") || "South Africa";
+  const lat = parseFloat(searchParams.get("lat") || "-33.5298798");
+  const lng = parseFloat(searchParams.get("lng") || "25.7126677");
 
 
 	return (
@@ -29,7 +32,9 @@ const CourtsList = ({ courts }: CourtsListProps) => {
                href={{
                 pathname: "/dashboard/courts",
                 query: {
-                  address: court.street_address
+                  address: court.street_address,
+                  lat: court.lat,
+                  lng: court.lng
                 },
                }}
 								className="flex flex-col p-3 space-y-2 transition-all duration-300 ease-in-out border-2 rounded-md cursor-pointer border-slate-300 odd:bg-slate-200 hover:bg-slate-300"
@@ -45,14 +50,7 @@ const CourtsList = ({ courts }: CourtsListProps) => {
 				</ScrollArea>
 			</div>
 			<div className="flex-1 w-full h-[760px]">
-				<GoogleMapsEmbed
-					apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}
-					height={760}
-					width="100%"
-					mode="place"
-					// maptype="satellite"
-					q={address}
-				/>
+			 <CourtMap lat={lat} lng={lng} />
 			</div>
 		</div>
 	);
