@@ -1,4 +1,4 @@
-import { SubmitButton } from "@/components/submit-button";
+import SignIn from "@/components/auth-ui/sign-in";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -23,7 +23,7 @@ export default async function Index() {
   return (
     <div className="flex flex-col items-center justify-center flex-1 w-full h-screen gap-20">
 
-      <SubmitButton>Hello World</SubmitButton>
+      <SignIn />
 
     </div>
   );

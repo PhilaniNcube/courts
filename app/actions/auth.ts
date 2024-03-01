@@ -2,6 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
 const signInSchema = z.object({
@@ -37,6 +38,7 @@ export const signIn = async (prevState:{message:string},formData: FormData) => {
   }
 
   return { message: "Signed In" };
+
 };
 
 
