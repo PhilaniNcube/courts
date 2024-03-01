@@ -130,7 +130,7 @@ const CreateCourt = () => {
 
 
   return (
-			<Dialog open={isOpen} onOpenChange={setIsOpen}>
+			<Dialog >
 				<DialogTrigger asChild>
 					<Button type="button">
 						<Plus size={24} />
