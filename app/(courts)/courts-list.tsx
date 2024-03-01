@@ -1,6 +1,11 @@
+"use client"
+
 import { ScrollBar, ScrollArea } from "@/components/ui/scroll-area";
 import { Database } from "@/schema";
 import { GoogleMapsEmbed } from "@next/third-parties/google";
+import { useRouter, useSearchParams } from "next/navigation";
+import { use, useState } from "react";
+import { set } from "zod";
 
 
 type CourtsListProps = {
@@ -8,6 +13,13 @@ type CourtsListProps = {
 }
 
 const CourtsList = ({ courts }: CourtsListProps) => {
+
+  const searchParams = useSearchParams();
+  const [addressState, setAddressState] = useState(
+			"223 2nd Street, Wynberg, Sandton, South Africa",
+		);
+  const router = useRouter()
+
 	return (
 		<div className="flex flex-row space-x-2 h-[calc(100vh-120px)]">
 			<div>
@@ -15,8 +27,14 @@ const CourtsList = ({ courts }: CourtsListProps) => {
 					<ul className="flex flex-col gap-y-4">
 						{courts.map((court) => (
 							<div
-								className="flex flex-col p-3 space-y-2 border-2 rounded-md border-slate-300 odd:bg-slate-200"
+								className="flex flex-col p-3 space-y-2 transition-all duration-300 ease-in-out border-2 rounded-md cursor-pointer border-slate-300 odd:bg-slate-200 hover:bg-slate-300"
 								key={court.id}
+								onClick={() => {
+								setAddressState(court.street_address || "");
+								}}
+								onKeyDown={() => {
+									setAddressState(court.street_address || "");
+								}}
 							>
 								<h3>District {court.district}</h3>
 								<p>Address: {court.street_address}</p>
@@ -24,7 +42,7 @@ const CourtsList = ({ courts }: CourtsListProps) => {
 							</div>
 						))}
 					</ul>
-          <ScrollBar />
+					<ScrollBar />
 				</ScrollArea>
 			</div>
 			<div className="flex-1 w-full h-[750px]">
@@ -34,7 +52,7 @@ const CourtsList = ({ courts }: CourtsListProps) => {
 					width="100%"
 					mode="place"
 					// maptype="satellite"
-					q={courts[5].street_address || "Johannesburg"}
+					q={addressState}
 				/>
 			</div>
 		</div>
