@@ -51,8 +51,9 @@ const SignIn = () => {
             Sign Up
           </Link>
         </p>
+        <p>{state.message && `${state.message}`}</p>
 				<Form {...form}>
-					<form className="w-full">
+					<form className="w-full" action={formAction}>
 						<div>
 							<div className="space-y-2">
 								<FormField
