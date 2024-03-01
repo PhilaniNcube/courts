@@ -29,6 +29,8 @@ import { SubmitButton } from "@/components/submit-button";
 import { useRef, useState } from "react";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
+
 
 type AutoCompleteType = {
 	label: string;
@@ -123,14 +125,26 @@ const CreateCourt = () => {
 
 
 
-          const response = await formAction(formData);
+          await formAction(formData);
 
-          setIsOpen(false);
+          toast(state.message,
+            {
+              action: {
+                label: "Close",
+                onClick: () => {
+                  setIsOpen(false);
+                  toast.dismiss();
+                }
+              }
+            }
+            );
+
+
         }
 
 
   return (
-			<Dialog >
+			<Dialog open={isOpen} onOpenChange={setIsOpen}>
 				<DialogTrigger asChild>
 					<Button type="button">
 						<Plus size={24} />

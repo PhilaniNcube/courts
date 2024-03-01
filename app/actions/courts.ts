@@ -1,6 +1,7 @@
 "use server"
 
 import { createClient } from "@/utils/supabase/server";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {z} from "zod";
 
@@ -134,6 +135,8 @@ export const createCourt = async (prevState: ActionState, formData: FormData) =>
     lng: geocode.results[0].geometry.location.lng,
     location: `POINT( ${geocode.results[0].geometry.location.lng}  ${geocode.results[0].geometry.location.lat})`
   }]).select('*');
+
+    revalidatePath("/dasboard/courts")
 
   console.log({ data, error })
 

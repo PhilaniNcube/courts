@@ -24,8 +24,6 @@ export async function getCourts() {
       error: err,
       courts: null
     }
-  } finally {
-    revalidatePath("/dasboard/courts")
   }
 
 
