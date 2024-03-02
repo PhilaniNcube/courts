@@ -31,7 +31,7 @@ const DashboardLayout = async ({children}:{children:ReactNode}) => {
              </nav>
           </div>
         </aside>
-        <div className="flex-1 h-full">
+        <div className="flex-1 h-screen">
           <div className="flex flex-row justify-between w-full px-6 py-4 border-b">
             <Button size="sm">
               <XIcon className="w-6 h-6" />

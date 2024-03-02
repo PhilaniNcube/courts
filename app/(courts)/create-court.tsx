@@ -172,6 +172,13 @@ const CreateCourt = () => {
 											value,
 											onChange: setValue,
 										}}
+                    onLoadFailed={(error) => console.error("Could not load Google Maps", error)}
+                    autocompletionRequest={{
+                      types: ['geocode'],
+                      componentRestrictions: {
+                        country: 'za'
+                      }
+                    }}
 									/>
 								</div>
 
