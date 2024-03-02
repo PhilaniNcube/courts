@@ -19,24 +19,12 @@ const CourtMap = ({ lat = -32.7072613, lng = 26.2934731 }: CourtMapProps) => {
 
 	return (
 		<APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
-			<div className="h-[600px] overflow-hidden">
-				<Map zoom={18} center={position} mapId={process.env.NEXT_PUBLIC_MAP_ID} className="h-[750px]" style={{
-          width: "100%",
-          height: '600px',
-        }}>
+			<div className="h-[750px]">
+				<Map zoom={18} center={position} mapId={process.env.NEXT_PUBLIC_MAP_ID}>
 					<AdvancedMarker position={position} onClick={() => setIsOpen(true)}>
             <Pin />
           </AdvancedMarker>
-          {isOpen && (
-            <InfoWindow
-              position={position}
-              onCloseClick={() => setIsOpen(false)}
-            >
-              <div>
-                <h1>{address}</h1>
-              </div>
-            </InfoWindow>
-          )}
+
 				</Map>
 			</div>
 		</APIProvider>
