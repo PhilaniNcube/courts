@@ -168,10 +168,14 @@ const CreateCourt = () => {
 									<Label htmlFor="address">Enter Street Address</Label>
 									<GooglePlacesAutocomplete
 										apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
-										selectProps={{
+										apiOptions={{
+                      retries: 5,
+                    }}
+                    selectProps={{
 											value,
 											onChange: setValue,
 										}}
+                    debounce={1000}
                     onLoadFailed={(error) => console.error("Could not load Google Maps", error)}
                     autocompletionRequest={{
                       types: ['geocode'],

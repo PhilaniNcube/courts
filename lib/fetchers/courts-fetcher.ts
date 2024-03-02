@@ -19,7 +19,7 @@ export async function getCourts() {
   }
 
   } catch (err) {
-    console.error(err);
+
     return {
       error: err,
       courts: null

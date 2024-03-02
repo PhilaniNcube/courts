@@ -87,7 +87,7 @@ export const createCourt = async (prevState: ActionState, formData: FormData) =>
   });
 
   if (!validatedFields.success) {
-    // console.log(validatedFields.error)
+
     return {
       message: 'Invalid form submission',
       errors: validatedFields.error.flatten().fieldErrors,
@@ -121,7 +121,7 @@ export const createCourt = async (prevState: ActionState, formData: FormData) =>
 
   const geocode: GeocodingResponse = await response;
 
-  console.log(geocode)
+
 
   const { data, error } = await supabase.from('courts').insert([{
     district: validatedFields.data.district,
@@ -138,7 +138,7 @@ export const createCourt = async (prevState: ActionState, formData: FormData) =>
 
     revalidatePath("/dasboard/courts")
 
-  console.log({ data, error })
+
 
   if (error) {
     return { message: 'Could not create court',
@@ -181,7 +181,7 @@ export const updateCourt = async (prevState: ActionState,court_id: string, formD
 
   }).eq('id', court_id).select('*').single();
 
-  console.log({ data, error })
+
 
   if (error) {
     return { message: 'Could not update court',

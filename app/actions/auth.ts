@@ -70,7 +70,7 @@ formData: FormData) => {
     }
   }
 
-   console.log('validatedFields', validatedFields.data)
+
 
   const origin = headers().get("origin");
   const supabase = createClient();
@@ -88,12 +88,12 @@ formData: FormData) => {
   });
 
   if (error) {
-      console.log("What is the error", error)
+
     return { message: error.message,
     };
   }
 
-  console.log("Check email to continue sign in process")
+
 
   return { message: "Check email to continue sign in process", };
 };

@@ -15,7 +15,7 @@ export default async function Index() {
   }
 
   if(data.user?.id) {
-    console.log(data.user);
+
     redirect("/dashboard");
   }
 
