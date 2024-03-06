@@ -68,7 +68,7 @@ export type ActionState = {
     province?: string[] | undefined;
     server?: string | undefined;
     tel?: string[] | undefined;
-  };
+  } | null;
 };
 
 
@@ -112,7 +112,7 @@ export const createCourt = async (prevState: ActionState, formData: FormData) =>
       if (!response || response.status === "ZERO_RESULTS" || response.status === "INVALID_REQUEST") {
     redirect(
       `/error?message=${encodeURIComponent(
-          "we could not find a location or solar data for the specified address"
+          "we could not find a location"
         )}`
 
     );
@@ -147,9 +147,7 @@ export const createCourt = async (prevState: ActionState, formData: FormData) =>
     }};
   }
 
-  return { message: 'Court created', errors: {
-
-  } };
+  return { message: 'Court created', errors: null };
 };
 
 
@@ -190,7 +188,5 @@ export const updateCourt = async (prevState: ActionState,court_id: string, formD
     }};
   }
 
-  return { message: 'Court updated', errors: {
-
-  } };
+  return { message: 'Court updated', errors: null };
 }

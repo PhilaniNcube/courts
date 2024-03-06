@@ -126,23 +126,11 @@ const CreateCourt = () => {
 
 
           await formAction(formData);
+          formRef.current?.reset();
 
-          if(state.message === "Court created successfully") {
+          // setIsOpen(false);
 
-              toast(state.message, {
-															action: {
-																label: "Close",
-																onClick: () => {
-																	setIsOpen(false);
-																	toast.dismiss();
-																},
-															},
-														});
-            formRef.current?.reset();
-            setIsOpen(false);
-          }
-
-
+          console.log({state})
 
 
         }
