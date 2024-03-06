@@ -127,17 +127,22 @@ const CreateCourt = () => {
 
           await formAction(formData);
 
-          toast(state.message,
-            {
-              action: {
-                label: "Close",
-                onClick: () => {
-                  setIsOpen(false);
-                  toast.dismiss();
-                }
-              }
-            }
-            );
+          if(state.message === "Court created successfully") {
+
+              toast(state.message, {
+															action: {
+																label: "Close",
+																onClick: () => {
+																	setIsOpen(false);
+																	toast.dismiss();
+																},
+															},
+														});
+            formRef.current?.reset();
+            setIsOpen(false);
+          }
+
+
 
 
         }
