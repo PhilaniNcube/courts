@@ -107,14 +107,17 @@ const CreateCourt = () => {
 					},
 				});
 
+
+
+
         const formRef = useRef<HTMLFormElement>(null);
 
-        const pending = form.formState.isSubmitting;
+        const [pending, setPending] = useState(false);
 
 
 
         const onSubmit = async (values:z.infer<typeof formSchema>) => {
-
+          setPending(true);
 
           const formData = new FormData();
           formData.append('district', values.district);
@@ -126,13 +129,15 @@ const CreateCourt = () => {
           formData.append('tel', values.tel);
 
 
-
           await formAction(formData);
+
           formRef.current?.reset();
 
+          setValue(null);
+          setPending(false);
           // setIsOpen(false);
 
-          console.log({state})
+
 
 
         }
