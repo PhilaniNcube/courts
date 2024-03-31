@@ -1,7 +1,7 @@
 "use server"
 
 import { createClient } from "@/utils/supabase/server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import {z} from "zod";
 import type { GeocodingResponse } from "./courts";
@@ -40,7 +40,6 @@ export async function addSherrif(prevState: PrevState, formData:FormData){
     phone_contact: formData.get('phone_contact'),
     address: formData.get('address'),
   })
-
 
   if (!validatedFields.success) {
 
