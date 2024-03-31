@@ -23,7 +23,7 @@ import { useForm } from "react-hook-form";
 import { set, z } from "zod";
 import { createCourt } from "../actions/courts";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { CircleDashed, Plus } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SubmitButton } from "@/components/submit-button";
 import { useRef, useState } from "react";
@@ -108,6 +108,8 @@ const CreateCourt = () => {
 				});
 
         const formRef = useRef<HTMLFormElement>(null);
+
+        const pending = form.formState.isSubmitting;
 
 
 
@@ -316,7 +318,7 @@ const CreateCourt = () => {
 								/>
 
 								<div className="w-full my-4">
-									<SubmitButton className="w-full">Save</SubmitButton>
+									<Button aria-disabled={pending} type="submit" >{pending ? <CircleDashed className="animate-spin" /> : "Save"}</Button>
 								</div>
 							</form>
 						</Form>
