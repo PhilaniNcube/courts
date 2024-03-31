@@ -93,6 +93,7 @@ const initialState = {
 
 const CreateCourt = () => {
 
+  const [pending, setPending] = useState(false);
   const [state, formAction] = useFormState(createCourt, initialState);
 
   const [value, setValue] = useState<AutoCompleteType | null>(null);
@@ -112,7 +113,6 @@ const CreateCourt = () => {
 
         const formRef = useRef<HTMLFormElement>(null);
 
-        const [pending, setPending] = useState(false);
 
 
 
@@ -131,7 +131,7 @@ const CreateCourt = () => {
 
           await formAction(formData);
 
-          formRef.current?.reset();
+          form.reset();
 
           setValue(null);
           setPending(false);
@@ -161,6 +161,7 @@ const CreateCourt = () => {
 					<div className="w-full">
 						<Form {...form}>
 							<form
+              ref={formRef}
               // action={formAction}
               onSubmit={form.handleSubmit(onSubmit)}
               >
