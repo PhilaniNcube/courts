@@ -164,7 +164,7 @@ const CreateCourt = () => {
 									<GooglePlacesAutocomplete
 										apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
 										apiOptions={{
-                      retries: 5,
+                      retries: 8,
                     }}
                     selectProps={{
 											value,
@@ -174,6 +174,7 @@ const CreateCourt = () => {
                     onLoadFailed={(error) => console.error("Could not load Google Maps", error)}
                     autocompletionRequest={{
                       types: ['geocode'],
+
                       componentRestrictions: {
                         country: 'za'
                       }
