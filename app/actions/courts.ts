@@ -110,12 +110,12 @@ export const createCourt = async (prevState: ActionState, formData: FormData) =>
     .catch((err) => console.error(err));
 
       if (!response || response.status === "ZERO_RESULTS" || response.status === "INVALID_REQUEST") {
-    redirect(
-      `/error?message=${encodeURIComponent(
-          "we could not find a location"
-        )}`
-
-    );
+        return {
+          message: 'Could not create court',
+          errors: {
+            street_address: ['Could not find location for the specified address.'],
+          },
+        };
     // throw new Error("Could not find location for the specified address.");
   }
 

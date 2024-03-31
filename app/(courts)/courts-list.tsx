@@ -1,7 +1,7 @@
 "use client"
 
 import { ScrollBar, ScrollArea } from "@/components/ui/scroll-area";
-import { Database } from "@/schema";
+import type { Database } from "@/schema";
 import { GoogleMapsEmbed } from "@next/third-parties/google";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -18,8 +18,8 @@ const CourtsList = ({ courts }: CourtsListProps) => {
 
   const searchParams = useSearchParams();
   const address = searchParams.get("address") || "South Africa";
-  const lat = parseFloat(searchParams.get("lat") || "-33.5298798");
-  const lng = parseFloat(searchParams.get("lng") || "25.7126677");
+  const lat = Number(searchParams.get("lat") || "-33.5298798");
+  const lng = Number(searchParams.get("lng") || "25.7126677");
 
 
 	return (
