@@ -163,9 +163,9 @@ const CreateCourt = () => {
 									<Label htmlFor="address">Enter Street Address</Label>
 									<GooglePlacesAutocomplete
 										apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
-										apiOptions={{
-                      retries: 8,
-                    }}
+										// apiOptions={{
+                    //   retries: 8,
+                    // }}
                     selectProps={{
 											value,
 											onChange: setValue,
