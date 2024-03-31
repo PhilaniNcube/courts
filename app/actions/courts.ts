@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {z} from "zod";
 
-type GeocodingResponse = {
+export type GeocodingResponse = {
   results: {
     address_components: {
       long_name: string;
@@ -60,7 +60,7 @@ const formSchema = z.object({
 export type ActionState = {
   message: string;
   errors: {
-     court_type?: string[] | undefined;
+    court_type?: string[] | undefined;
     district?: string[] | undefined;
     street_address?: string[] | undefined;
     office?: string[] | undefined;

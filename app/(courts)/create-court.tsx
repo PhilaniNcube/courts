@@ -32,7 +32,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
 
-type AutoCompleteType = {
+export type AutoCompleteType = {
 	label: string;
 	value: {
 		matched_substrings: {
