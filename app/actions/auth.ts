@@ -37,8 +37,8 @@ export const signIn = async (prevState:{message:string},formData: FormData) => {
     return { message: "Could not authenticate user" };
   }
 
-  return { message: "Signed In" };
-
+  redirect("/dashboard");
+  // return { message: "Signed in" };
 };
 
 
