@@ -1,12 +1,18 @@
 import AddSherrif from "@/app/(sherrifs)/add-sherrif";
 import SherrifSummaryTable from "@/app/(sherrifs)/sherrif-summary-table";
 import { Separator } from "@/components/ui/separator";
+import { getMagistratesCourts } from "@/lib/fetchers/courts-fetcher";
 
-const SherrifsPage = () => {
+const SherrifsPage = async () => {
+
+ const {courts, error} = await getMagistratesCourts()
+
+ console.log({courts, error})
+
   return (
 			<div className="">
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-				<AddSherrif />
+        <div className="grid grid-cols-1">
+          {!error || courts === null || courts.length !== 0 && <AddSherrif courts={courts} /> }
         </div>
         <Separator className="my-4" />
 				<SherrifSummaryTable />

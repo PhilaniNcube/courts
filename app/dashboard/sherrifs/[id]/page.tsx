@@ -10,6 +10,8 @@ const page = async ({params: {id}}:{params:{id:string}}) => {
   const {sherrif, error} = await getSherrif(id);
   const {courts, error: courtError} = await getMagistratesCourts();
 
+  console.log({sherrif, error, courts, courtError})
+
   if(error || sherrif === null || courtError || courts === null) {
     return  <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="w-full max-w-md p-6 space-y-8 bg-white rounded-md shadow-lg dark:bg-gray-800">

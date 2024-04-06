@@ -12,6 +12,8 @@ import { Input } from "@/components/ui/input";
 import { useFormState } from "react-dom";
 import { addSherrif } from "../actions/sherrifs";
 import { SubmitButton } from "@/components/submit-button";
+import { Database } from "@/schema";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 
 const formSchema = z.object({
@@ -20,14 +22,18 @@ const formSchema = z.object({
 	email: z.string().email(),
 	cell_number: z.string().trim(),
 	phone_contact: z.string().trim(),
-	// address: z.string().trim(),
+	magistrate_court_id: z.string().trim(),
 });
 
 const initialState = {
   message: "",
 }
 
-const AddSherrif = () => {
+type AddSherrifProps = {
+  courts: Database['public']['Tables']['courts']['Row'][]
+}
+
+const AddSherrif = ({courts}:AddSherrifProps) => {
 
   const [value, setValue] = useState<AutoCompleteType | null>(null);
    const [state, formAction] = useFormState(addSherrif, initialState);
@@ -160,6 +166,30 @@ const AddSherrif = () => {
 									</FormItem>
 								)}
 							/>
+              <FormField
+            control={form.control}
+            name="magistrate_court_id"
+            render={({ field }) => (
+            <FormItem>
+              <FormLabel>Magistrates Court</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a magistrates court" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {courts.map((court) => (
+                  <SelectItem value={court.id}>{court.office}</SelectItem>
+                  ))}
+
+                </SelectContent>
+              </Select>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 						</div>
             <SubmitButton>Save</SubmitButton>
 					</form>

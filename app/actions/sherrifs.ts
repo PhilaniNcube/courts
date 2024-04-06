@@ -112,7 +112,7 @@ export async function updateSherrif(prevState: PrevState, formData:FormData){
     email: formData.get('email'),
     cell_number: formData.get('cell_number'),
     phone_contact: formData.get('phone_contact'),
-    address: formData.get('address'),
+    // address: formData.get('address'),
     magistrate_court_id: formData.get('magistrate_court_id'),
   })
 
@@ -126,45 +126,20 @@ export async function updateSherrif(prevState: PrevState, formData:FormData){
 
 
 
- const encodeAddress = encodeURI(validatedFields.data.address as string);
-
-   const gecodingUrl = new URL(
-    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeAddress}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
-  );
-
-    const response = await fetch(gecodingUrl)
-    .then((res) => res.json())
-    .then((data) => data)
-    .catch((err) => console.error(err));
-
-      if (!response || response.status === "ZERO_RESULTS" || response.status === "INVALID_REQUEST") {
-
-      return {
-        message: "Could not find location for the specified address",
-      };
-    // throw new Error("Could not find location for the specified address.");
-  }
-
-  const geocode: GeocodingResponse = await response;
-
   const {data, error} = await supabase.from('sherrifs').update({
     first_name: validatedFields.data.first_name,
     last_name: validatedFields.data.last_name,
     email: validatedFields.data.email,
     cell_number: validatedFields.data.cell_number,
     phone_contact: validatedFields.data.phone_contact,
-    address: validatedFields.data.address,
     magistrate_court_id: validatedFields.data.magistrate_court_id,
-    lat: geocode.results[0].geometry.location.lat,
-    lng: geocode.results[0].geometry.location.lng,
-    location: `POINT( ${geocode.results[0].geometry.location.lng}  ${geocode.results[0].geometry.location.lat})`
   }).select('*').single();
 
 
 
   if (error) {
     return {
-      message: "An error occurred while adding the sherrif",
+      message: "An error occurred while updating the sherrif",
     };
   }
 

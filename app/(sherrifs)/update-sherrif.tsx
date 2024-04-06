@@ -61,7 +61,7 @@ const UpdateSherrif = ({sherrif, courts}:UpdateSherrifProps) => {
     formData.append('email', values.email);
     formData.append('cell_number', values.cell_number);
     formData.append('phone_contact', values.phone_contact);
-    formData.append('address', value?.label || '');
+    // formData.append('address', value?.label || '');
 
     await formAction(formData);
 
@@ -76,33 +76,7 @@ const UpdateSherrif = ({sherrif, courts}:UpdateSherrifProps) => {
 						// action={formAction}
 						onSubmit={form.handleSubmit(onSubmit)}
 					>
-						<div className="my-2">
-							<Label htmlFor="address">Enter Street Address</Label>
-							<GooglePlacesAutocomplete
-								apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
-                apiOptions={{
-                  language: 'en',
-                }}
-								selectProps={{
-									value,
-									onChange: setValue,
-								}}
-								debounce={1000}
-								onLoadFailed={(error) =>
-									console.error("Could not load Google Maps", error)
-								}
-								autocompletionRequest={{
-									types: ["geocode"],
-									componentRestrictions: {
-										country: "za",
-									},
-                  location: {
-                    lat: sherrif.lat!,
-                    lng: sherrif.lng!,
-                  }
-								}}
-							/>
-						</div>
+
 						<div className="grid grid-cols-1 gap-6 my-4 md:grid-cols-2">
 							<FormField
 								control={form.control}
