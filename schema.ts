@@ -159,7 +159,10 @@ export type Database = {
           first_name: string
           id: string
           last_name: string
+          lat: number | null
+          lng: number | null
           location: unknown
+          magistrate_court_id: string | null
           phone_contact: string | null
           user_id: string | null
         }
@@ -171,7 +174,10 @@ export type Database = {
           first_name: string
           id?: string
           last_name: string
+          lat?: number | null
+          lng?: number | null
           location: unknown
+          magistrate_court_id?: string | null
           phone_contact?: string | null
           user_id?: string | null
         }
@@ -183,16 +189,19 @@ export type Database = {
           first_name?: string
           id?: string
           last_name?: string
+          lat?: number | null
+          lng?: number | null
           location?: unknown
+          magistrate_court_id?: string | null
           phone_contact?: string | null
           user_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "public_sherrifs_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: "public_sherrifs_magistrate_court_id_fkey"
+            columns: ["magistrate_court_id"]
             isOneToOne: false
-            referencedRelation: "profiles"
+            referencedRelation: "courts"
             referencedColumns: ["id"]
           },
         ]

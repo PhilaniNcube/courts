@@ -26,3 +26,30 @@ export async function getSherrifs(page=1, limit=10) {
     };
   }
 }
+
+
+export async function getSherrif(id:string){
+
+  const supabase = createClient();
+
+  try {
+    const { data, error } = await supabase.from("sherrifs").select("*").eq("id", id).single();
+    if (error) {
+      return {
+        error: error.message,
+        sherrif: null,
+      };
+    }
+
+    return {
+      error: null,
+      sherrif: data,
+    };
+  } catch (err) {
+    return {
+      error: err,
+      sherrif: null,
+    };
+  }
+
+}

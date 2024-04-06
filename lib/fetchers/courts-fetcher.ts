@@ -89,6 +89,33 @@ export async function getMagistratesCount() {
   }
 }
 
+export async function getMagistratesCourts() {
+  const supabase = createClient();
+
+  try {
+    const { error, data } = await supabase.from("courts").select("*").eq("court_type", "Magistrate");
+
+    if (error) {
+      return {
+        error: error.message,
+        courts: null,
+      };
+    }
+
+    return {
+    error: null,
+    courts: data,
+  }
+
+  } catch (err) {
+
+    return {
+      error: err,
+      courts: null,
+    }
+  }
+}
+
 
 export async function groupedCourts() {
   const supabase = createClient();
