@@ -35,6 +35,8 @@ type AddSherrifProps = {
 
 const AddSherrif = ({courts}:AddSherrifProps) => {
 
+  console.log({courts})
+
   const [value, setValue] = useState<AutoCompleteType | null>(null);
    const [state, formAction] = useFormState(addSherrif, initialState);
 
