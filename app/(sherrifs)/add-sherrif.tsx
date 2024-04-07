@@ -3,7 +3,7 @@
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -12,8 +12,11 @@ import { Input } from "@/components/ui/input";
 import { useFormState } from "react-dom";
 import { addSherrif } from "../actions/sherrifs";
 import { SubmitButton } from "@/components/submit-button";
-import { Database } from "@/schema";
+import type { Database } from "@/schema";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { useFormStatus } from "react-dom";
 
 
 const formSchema = z.object({
@@ -27,6 +30,7 @@ const formSchema = z.object({
 
 const initialState = {
   message: "",
+  success: false,
 }
 
 type AddSherrifProps = {
@@ -35,7 +39,7 @@ type AddSherrifProps = {
 
 const AddSherrif = ({courts}:AddSherrifProps) => {
 
-  console.log({courts})
+  const { pending } = useFormStatus();
 
   const [value, setValue] = useState<AutoCompleteType | null>(null);
    const [state, formAction] = useFormState(addSherrif, initialState);
@@ -45,6 +49,26 @@ const AddSherrif = ({courts}:AddSherrifProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   })
+
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+
+        if (state.success) {
+									toast.success(state.message, {
+										description: "Sherrif added successfully",
+										position: "top-right",
+										action: {
+											label: "Close",
+											onClick: () => {
+												toast.dismiss();
+											},
+										},
+									});
+								}
+  }, [state.success])
+
+
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
 
@@ -56,10 +80,15 @@ const AddSherrif = ({courts}:AddSherrifProps) => {
     formData.append('cell_number', values.cell_number);
     formData.append('phone_contact', values.phone_contact);
     formData.append('address', value?.label || '');
+    formData.append('magistrate_court_id', values.magistrate_court_id);
 
     await formAction(formData);
 
+
+
     setValue(null);
+    formRef.current?.reset();
+
 
   };
 
@@ -73,12 +102,15 @@ const AddSherrif = ({courts}:AddSherrifProps) => {
 					>
 						<div className="my-2">
 							<Label htmlFor="address">Enter Street Address</Label>
+
 							<GooglePlacesAutocomplete
 								apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
 								// apiOptions={{
 								//   retries: 8,
 								// }}
 								selectProps={{
+									name: "street_address",
+									id: "street_address",
 									value,
 									onChange: setValue,
 								}}
@@ -168,32 +200,41 @@ const AddSherrif = ({courts}:AddSherrifProps) => {
 									</FormItem>
 								)}
 							/>
-              <FormField
-            control={form.control}
-            name="magistrate_court_id"
-            render={({ field }) => (
-            <FormItem>
-              <FormLabel>Magistrates Court</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a magistrates court" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {courts.map((court) => (
-                  <SelectItem value={court.id}>{court.office}</SelectItem>
-                  ))}
+							<FormField
+								control={form.control}
+								name="magistrate_court_id"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Magistrates Court</FormLabel>
+										<Select
+											onValueChange={field.onChange}
+											defaultValue={field.value}
+										>
+											<FormControl>
+												<SelectTrigger>
+													<SelectValue placeholder="Select a magistrates court" />
+												</SelectTrigger>
+											</FormControl>
+											<SelectContent>
+												{courts.map((court) => (
+													<SelectItem value={court.id}>
+														{court.office}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
 
-                </SelectContent>
-              </Select>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
 						</div>
-            <SubmitButton>Save</SubmitButton>
+						<Button
+							aria-disabled={form.formState.isSubmitting}
+							className="w-[300px]"
+						>
+							{form.formState.isSubmitting ? "Wait..." : "Save"}
+						</Button>
 					</form>
 				</Form>
 			</div>

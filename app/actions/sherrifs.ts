@@ -2,7 +2,6 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath, revalidateTag } from "next/cache";
-import { redirect } from "next/navigation";
 import {z} from "zod";
 import type { GeocodingResponse } from "./courts";
 
@@ -39,13 +38,17 @@ export async function addSherrif(prevState: PrevState, formData:FormData){
     cell_number: formData.get('cell_number'),
     phone_contact: formData.get('phone_contact'),
     address: formData.get('address'),
+    magistrate_court_id: formData.get('magistrate_court_id'),
   })
+
+  console.log(formData.get('street_address'))
 
   if (!validatedFields.success) {
 
     return {
       message: "Invalid form submission",
       errors: validatedFields.error.flatten().fieldErrors,
+      success: false,
     }
   }
 
@@ -66,6 +69,7 @@ export async function addSherrif(prevState: PrevState, formData:FormData){
 
       return {
         message: "Could not find location for the specified address",
+        success: false,
       };
     // throw new Error("Could not find location for the specified address.");
   }
@@ -79,16 +83,17 @@ export async function addSherrif(prevState: PrevState, formData:FormData){
     cell_number: validatedFields.data.cell_number,
     phone_contact: validatedFields.data.phone_contact,
     address: validatedFields.data.address,
+    magistrate_court_id: validatedFields.data.magistrate_court_id,
     lat: geocode.results[0].geometry.location.lat,
     lng: geocode.results[0].geometry.location.lng,
     location: `POINT( ${geocode.results[0].geometry.location.lng}  ${geocode.results[0].geometry.location.lat})`
   }]).select('*').single();
 
 
-
   if (error) {
     return {
       message: "An error occurred while adding the sherrif",
+      success: false,
     };
   }
 
@@ -96,6 +101,7 @@ export async function addSherrif(prevState: PrevState, formData:FormData){
 
   return {
     message: "Sherrif added successfully",
+    success: true,
   };
 
 
