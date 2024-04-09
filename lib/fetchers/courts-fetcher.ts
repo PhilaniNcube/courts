@@ -1,3 +1,4 @@
+import type { GeocodingResponse } from "@/app/actions/courts";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 
@@ -139,6 +140,63 @@ export async function groupedCourts() {
 
     return {
       error: err,
+      data: null,
+    }
+  }
+}
+
+
+export async function getNearestCourts(address:string) {
+  const supabase = createClient();
+
+   const encodeAddress = encodeURI(address);
+
+   const gecodingUrl = new URL(
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeAddress}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
+  );
+
+    const response = await fetch(gecodingUrl)
+    .then((res) => res.json())
+    .then((data) => data)
+    .catch((err) => console.error(err));
+
+      if (!response || response.status === "ZERO_RESULTS" || response.status === "INVALID_REQUEST") {
+
+      return {
+        error: "Could not find location for the specified address",
+        data: null,
+      };
+    // throw new Error("Could not find location for the specified address.");
+  }
+
+  const geocode: GeocodingResponse = await response;
+
+  try {
+
+
+
+    const { data, error } = await supabase.rpc('near', {
+      lat: geocode.results[0].geometry.location.lat,
+      long: geocode.results[0].geometry.location.lng,
+    })
+
+
+    if (error) {
+      return {
+        error: error.message,
+        data: null,
+      };
+    }
+
+    return {
+    error: null,
+    data: data,
+  }
+
+  } catch (err) {
+
+    return {
+      error: "Could not find nearest courts",
       data: null,
     }
   }

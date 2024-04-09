@@ -224,6 +224,17 @@ export type Database = {
           count: number
         }[]
       }
+      get_nearest_courts: {
+        Args: {
+          lat: number
+          lng: number
+        }
+        Returns: {
+          id: string
+          office: string
+          distance_km: number
+        }[]
+      }
       group_courts_by_type: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -234,6 +245,32 @@ export type Database = {
       is_admin: {
         Args: Record<PropertyKey, never>
         Returns: boolean
+      }
+      near: {
+        Args: {
+          lat: number
+          long: number
+        }
+        Returns: {
+          id: string
+          office: string
+          lat: number
+          long: number
+          dist_meters: number
+        }[]
+      }
+      nearby_courts: {
+        Args: {
+          lat: number
+          lng: number
+        }
+        Returns: {
+          id: string
+          office: string
+          lat: number
+          lng: number
+          dist_meters: number
+        }[]
       }
     }
     Enums: {
