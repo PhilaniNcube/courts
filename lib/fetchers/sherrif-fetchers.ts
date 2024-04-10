@@ -53,3 +53,28 @@ export async function getSherrif(id:string){
   }
 
 }
+
+
+export async function getNearestSherrifs(lat:number, lng:number) {
+  const supabase = createClient()
+
+  try {
+    const { data, error } = await supabase.rpc("nearest_sherrifs", { lat, long: lng });
+    if (error) {
+      return {
+        error: error.message,
+        sherrifs: null,
+      };
+    }
+
+    return {
+      error: null,
+      sherrifs: data,
+    };
+  } catch (err) {
+    return {
+      error: "An error occurred",
+      sherrifs: null,
+    };
+  }
+}

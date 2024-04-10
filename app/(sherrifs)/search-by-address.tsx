@@ -6,6 +6,7 @@ import {type FormEvent, useState } from "react";
 import {  useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { SearchIcon } from "lucide-react";
+import { set } from "zod";
 
 const SearchByAddress = () => {
 
@@ -18,6 +19,8 @@ const SearchByAddress = () => {
     e.preventDefault();
 
     router.push(`/dashboard/sherrifs/search?address=${value?.label}`);
+
+    setValue(null);
   };
 
   return (
@@ -40,7 +43,6 @@ const SearchByAddress = () => {
 					onLoadFailed={(error) =>
 						console.error("Could not load Google Maps", error)
 					}
-
 					autocompletionRequest={{
 						types: ["geocode"],
 						componentRestrictions: {

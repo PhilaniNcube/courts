@@ -175,11 +175,10 @@ export async function getNearestCourts(address:string) {
 
 
 
-    const { data, error } = await supabase.rpc('near', {
+    const { data, error } = await supabase.rpc('nearest_courts', {
       lat: geocode.results[0].geometry.location.lat,
       long: geocode.results[0].geometry.location.lng,
     })
-
 
     if (error) {
       return {
@@ -198,6 +197,34 @@ export async function getNearestCourts(address:string) {
     return {
       error: "Could not find nearest courts",
       data: null,
+    }
+  }
+}
+
+
+export async function getCourt(id:string) {
+  const supabase = createClient();
+
+  try {
+    const { data, error } = await supabase.from("courts").select("*").eq("id", id).single();
+
+    if (error) {
+      return {
+        error: error.message,
+        court: null,
+      };
+    }
+
+    return {
+    error: null,
+    court: data,
+  }
+
+  } catch (err) {
+
+    return {
+      error: "Could not find court",
+      court: null,
     }
   }
 }

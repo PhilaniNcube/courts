@@ -246,7 +246,7 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
-      near: {
+      nearest_courts: {
         Args: {
           lat: number
           long: number
@@ -254,21 +254,28 @@ export type Database = {
         Returns: {
           id: string
           office: string
+          court_type: Database["public"]["Enums"]["court_type"]
+          tel: string
           lat: number
           long: number
           dist_meters: number
         }[]
       }
-      nearby_courts: {
+      nearest_sherrifs: {
         Args: {
           lat: number
-          lng: number
+          long: number
         }
         Returns: {
           id: string
-          office: string
+          first_name: string
+          last_name: string
+          cell_number: string
+          phone_contact: string
+          email: string
+          address: string
           lat: number
-          lng: number
+          long: number
           dist_meters: number
         }[]
       }
