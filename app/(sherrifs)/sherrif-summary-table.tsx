@@ -13,14 +13,11 @@ import { EyeIcon } from "lucide-react";
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
 
-const getCachedSherrifs = unstable_cache(
-  async () => await getSherrifs(1),
-  ["sherrifs"]
-)
+
 
 const SherrifSummaryTable = async () => {
 
-  const { sherrifs, error } = await getCachedSherrifs();
+  const { sherrifs, error } = await getSherrifs(1);
 
 
 
