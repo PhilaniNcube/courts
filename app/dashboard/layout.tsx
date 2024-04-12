@@ -7,6 +7,7 @@ import { SearchCheck, XIcon } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import SearchByAddress from "../(sherrifs)/search-by-address";
+import { seedCourts } from "../actions/courts";
 
 const DashboardLayout =  ({children}:{children:ReactNode}) => {
 
@@ -48,6 +49,7 @@ const DashboardLayout =  ({children}:{children:ReactNode}) => {
 				<div className="flex-1 h-screen">
 					<div className="flex flex-row justify-between w-full px-6 py-4 border-b">
 						<SearchByAddress />
+
 						<Auth />
 					</div>
 					<ScrollArea className="w-full h-[calc(100vh-75px)] px-10 py-4">

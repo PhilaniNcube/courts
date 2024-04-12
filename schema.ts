@@ -37,7 +37,7 @@ export type Database = {
       }
       courts: {
         Row: {
-          court_type: Database["public"]["Enums"]["court_type"]
+          court_type: Database["public"]["Enums"]["court_type"] | null
           created_at: string
           district: string
           id: string
@@ -46,12 +46,12 @@ export type Database = {
           location: unknown | null
           office: string
           postal_address: string | null
-          province: Database["public"]["Enums"]["province"]
+          province: string
           street_address: string | null
           tel: string | null
         }
         Insert: {
-          court_type: Database["public"]["Enums"]["court_type"]
+          court_type?: Database["public"]["Enums"]["court_type"] | null
           created_at?: string
           district: string
           id?: string
@@ -60,12 +60,12 @@ export type Database = {
           location?: unknown | null
           office: string
           postal_address?: string | null
-          province: Database["public"]["Enums"]["province"]
+          province: string
           street_address?: string | null
           tel?: string | null
         }
         Update: {
-          court_type?: Database["public"]["Enums"]["court_type"]
+          court_type?: Database["public"]["Enums"]["court_type"] | null
           created_at?: string
           district?: string
           id?: string
@@ -74,7 +74,7 @@ export type Database = {
           location?: unknown | null
           office?: string
           postal_address?: string | null
-          province?: Database["public"]["Enums"]["province"]
+          province?: string
           street_address?: string | null
           tel?: string | null
         }

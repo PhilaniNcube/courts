@@ -1,5 +1,6 @@
 "use server"
 
+import { court_data } from "@/data/court-data";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -189,4 +190,29 @@ export const updateCourt = async (prevState: ActionState,court_id: string, formD
   }
 
   return { message: 'Court updated', errors: null };
+}
+
+
+export const seedCourts = async () => {
+
+  const supabase = createClient();
+
+const seedData = court_data.map((court) => ({district: court.district,
+      office: court.office,
+      province: court.province,
+      // court_type: "Magistrate",
+      postal_address: court.postal_address,
+      street_address: court.street_address,
+      tel: String(court.tel),
+      lat: Number(court.lat),
+      lng: Number(court.lng),
+      location: `POINT( ${Number(court.lng)}  ${Number(court.lat)})`}))
+
+
+     const data = await supabase.from('courts').insert(seedData).select('*');
+
+    console.log("Court data added", data)
+
+  return { message: 'Courts created'};
+
 }
