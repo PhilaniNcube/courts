@@ -3,20 +3,22 @@
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useRef, useState } from "react";
+import { startTransition, useEffect, useRef, useState } from "react";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import type { AutoCompleteType } from "../(courts)/create-court";
 import { Input } from "@/components/ui/input";
 import { useFormState } from "react-dom";
-import { addSherrif } from "../actions/sherrifs";
+import { addSherrif, createAction } from "../actions/sherrifs";
 import { SubmitButton } from "@/components/submit-button";
 import type { Database } from "@/schema";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useFormStatus } from "react-dom";
+
+
 
 
 const formSchema = z.object({
@@ -39,9 +41,14 @@ type AddSherrifProps = {
 
 const AddSherrif = ({courts}:AddSherrifProps) => {
 
+
+
   const { pending } = useFormStatus();
 
   const [value, setValue] = useState<AutoCompleteType | null>(null);
+
+
+
    const [state, formAction] = useFormState(addSherrif, initialState);
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -51,53 +58,80 @@ const AddSherrif = ({courts}:AddSherrifProps) => {
   })
 
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-
-        if (state.success) {
-									toast.success(state.message, {
-										description: "Sherrif added successfully",
-										position: "top-right",
-										action: {
-											label: "Close",
-											onClick: () => {
-												toast.dismiss();
-											},
-										},
-									});
-								}
-  }, [state.success])
 
 
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
 
-    const formData = new FormData();
-
-    formData.append('first_name', values.first_name);
-    formData.append('last_name', values.last_name);
-    formData.append('email', values.email);
-    formData.append('cell_number', values.cell_number);
-    formData.append('phone_contact', values.phone_contact);
-    formData.append('address', value?.label || '');
-    formData.append('magistrate_court_id', values.magistrate_court_id);
-
-    await formAction(formData);
 
 
+  //  fetch('/api/sherrif', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify({
+  //     ...values,
+  //     address: value?.label,
+  //   }),
+  //  }).then((res) => res.json()).then((data) => console.log(data)).catch((err) => console.error(err));
 
-    setValue(null);
-    formRef.current?.reset();
+  const formData = new FormData();
 
+  formData.append('first_name', values.first_name);
+  formData.append('last_name', values.last_name);
+  formData.append('email', values.email);
+  formData.append('cell_number', values.cell_number);
+  formData.append('phone_contact', values.phone_contact);
+  formData.append('address', value?.label as string);
+  formData.append('magistrate_court_id', values.magistrate_court_id);
+
+
+
+
+
+  //  fetch('/api/sherrif', {
+  //   method: 'POST',
+  //   body: formData,
+  //  }).then((res) => res.json()).then((data) => console.log(data)).catch((err) => console.error(err));
+
+
+
+   await formAction(formData);
+
+    if(state.success) {
+      toast.success(state.message, {
+							description: "Sherrif added successfully",
+							descriptionClassName: "text-green-600",
+              duration: 2000,
+							action: {
+								label: "Close",
+								onClick: () => form.reset(),
+							},
+						});
+      form.reset();
+      form.resetField('first_name');
+      form.resetField('last_name');
+      form.resetField('email');
+      form.resetField('cell_number');
+      form.resetField('phone_contact');
+      setValue(null);
+    } else {
+      toast.error(state.message);
+    }
 
   };
+
+
+
 
   return (
 			<div className="w-1/2 px-2">
 				<Form {...form}>
+          <p className="text-md font-medium text-red-600">{state.success === false && state.message}</p>
 					<form
 						ref={formRef}
-						// action={formAction}
+						// action={createAction}
 						onSubmit={form.handleSubmit(onSubmit)}
 					>
 						<div className="my-2">
@@ -229,12 +263,7 @@ const AddSherrif = ({courts}:AddSherrifProps) => {
 								)}
 							/>
 						</div>
-						<Button
-							aria-disabled={form.formState.isSubmitting}
-							className="w-[300px]"
-						>
-							{form.formState.isSubmitting ? "Wait..." : "Save"}
-						</Button>
+						<Button aria-disabled={pending} className="w-[300px]">{pending ? "Wait...": "Save"}</Button>
 					</form>
 				</Form>
 			</div>

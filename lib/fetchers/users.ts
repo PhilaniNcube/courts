@@ -9,8 +9,6 @@ export async function isLoggedIn() {
     return false;
   }
 
- console.log(data)
-
   return true;
 
 }

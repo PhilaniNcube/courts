@@ -14,6 +14,7 @@ type PrevState = {
     first_name?: string[] | undefined;
     last_name?: string[] | undefined;
     phone_contact?: string[] | undefined;
+    magistrate_court_id?: string[] | undefined;
   }
 }
 
@@ -27,9 +28,11 @@ const formSchema = z.object({
   magistrate_court_id: z.string().trim(),
 })
 
-export async function addSherrif(prevState: PrevState, formData:FormData){
+export async function addSherrif( prevState: PrevState, formData:FormData){
 
   const supabase = createClient();
+
+
 
   const validatedFields = formSchema.safeParse({
     first_name: formData.get('first_name'),
@@ -41,7 +44,7 @@ export async function addSherrif(prevState: PrevState, formData:FormData){
     magistrate_court_id: formData.get('magistrate_court_id'),
   })
 
-  console.log(formData.get('street_address'))
+
 
   if (!validatedFields.success) {
 
@@ -156,4 +159,22 @@ export async function updateSherrif(prevState: PrevState, formData:FormData){
   };
 
 
+}
+
+
+export async function createAction(formData:FormData) {
+
+  const supabase = createClient();
+
+  const { error, count} = await supabase.from('sherrifs').select('*', {count: 'exact'});
+
+  if (error) {
+    return {
+      count: 0,
+    };
+  }
+
+  return {
+    count,
+  }
 }
